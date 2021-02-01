@@ -1,2 +1,0 @@
-Skeleton 5
-d3f5Cä¢Term"d"Subst"d"Trs"ä¢Fun"ä¢Var"Naã¢MANY_SORTED"è0ad"ManySorted"jh1bd6aä¢AL"gp1d"AssocList"Caä¢L"gp1d"List"aä¢LP"gp1d"ListPair"aä¢LU"gp1d"ListUtil"ad"SU"gp1d"StringUtil"aä¢T"gp1ÿNd6f3ÿ‚ÿ‚0ÿCaä¢SortSpecialSymbols"ÿ6aä¢SortLex"jgp1ÿƒgp1e"Lexical"aä¢SortParsing"jgp1ÿƒ gp1e"Parsing"begp1ÿƒ?f0f7ÿÿ2Cÿ#ÿ‚0d"ListXProd"d"Rewrite"ÿ NNgp1ÿ(
