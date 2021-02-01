@@ -1,0 +1,30 @@
+(* sources.cm *)
+(* Masaki Haga *)
+
+Group is
+      $/basis.cm
+      $/smlnj-lib.cm
+      ./src/list_util.sml
+      ./src/assoc_list.sml
+      ./src/string_util.sml
+
+      ./src/var.sml
+      ./src/fun.sml
+      ./src/symbol.sml
+
+      ./src/lexical.sml
+      ./src/parsing.sml
+      ./src/term.sml
+
+      ./src/subst.sml
+      ./src/trs.sml
+      ./src/rewrite.sml
+
+      ./src/path_order.sml
+      ./src/cr.sml
+      ./src/comp.sml
+
+      ./src/formula.sml
+      ./src/yices2.sml
+
+      ./src/many_sorted.sml
