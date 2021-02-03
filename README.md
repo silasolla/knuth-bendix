@@ -1,5 +1,7 @@
 # Knuth-Bendix Completion in Standard ML
 
+Knuth-Bendix完備化を行い，等式を向き付けする．
+
 ```
 $ sml
 - CM.make "sources.cm"
