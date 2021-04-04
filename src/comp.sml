@@ -15,7 +15,7 @@ sig
     val collapse: eqs * rule * rules -> eqs * rule * rules
     val kbstep: (Term.term * Term.term -> bool) -> (eqs * rules) -> (eqs * rules)
     val prStatus: eqs * rule * rules -> eqs * rule * rules
-    val kb: (Term.term * Term.term -> bool) -> eqs -> bool
+    val kb: (Term.term * Term.term -> bool) -> eqs -> rules option
 end
 
 structure Comp: COMP =
@@ -92,10 +92,10 @@ fun kb grter es =
 	    (n := !n + 1; print ("Step " ^ Int.toString (!n) ^ "\n"); x)
 	fun kb' (es, rs) =
 	    case ((kbstep grter) o prStep) (es, rs) of
-		([], rs') => (print ("Success\n" ^ (prStep o Trs.prRules) rs'); true)
+		([], rs') => (print ("Success\n" ^ (prStep o Trs.prRules) rs'); SOME rs')
 	      | (es', rs') => kb' (es', rs')
-    in kb' (es, []) handle Failure => (print "Failure\n" ; false)
-			 | Success rs => (print ("Success\n" ^ Trs.prRules rs); true)
+    in kb' (es, []) handle Failure => (print "Failure\n" ; NONE)
+			 | Success rs => (print ("Success\n" ^ Trs.prRules rs); SOME rs)
     end			 
 
 end (* of local *)
