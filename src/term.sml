@@ -86,8 +86,9 @@ fun prPos [] = "e"
   | prPos (posHd::posTl) =
     foldl (fn (z,zs) => zs ^ "." ^ Int.toString z) (Int.toString posHd) posTl
 
+(* List.foldri は MLton だと使えないようなので，自前のものを用意 *)
 fun pos (Var x) = [[]]
-  | pos (Fun (f,ts)) = [] :: (L.foldri (fn (i,z,zs) => map (fn w => (i+1) :: w) (pos z) @ zs) [] ts)
+  | pos (Fun (f,ts)) = [] :: (LU.foldri (fn (i,z,zs) => map (fn w => (i+1) :: w) (pos z) @ zs) [] ts)
 
 fun symbol (Var x) [] = S.V x
   | symbol (Var x) _ = raise PositionNotInTerm

@@ -9,8 +9,8 @@ sig
     val add: ''a  -> ''a list -> ''a list
     val union: ''a list * ''a list -> ''a list
     val intersection: ''a list * ''a list -> ''a list
-    val foldri: (int -> 'a * 'b -> 'b) -> 'b -> 'a list -> 'b
-    val foldli: (int -> 'a * 'b -> 'b) -> 'b -> 'a list -> 'b
+    val foldri: (int * 'a * 'b -> 'b) -> 'b -> 'a list -> 'b
+    val foldli: (int * 'a * 'b -> 'b) -> 'b -> 'a list -> 'b
     val cutInHalf: int -> 'a list -> 'a list * 'a list
     val nthMap: int -> ('a -> 'a) -> 'a list -> 'a list
     val mapAppend: ('a -> 'b list) -> 'a list -> 'b list
@@ -40,12 +40,12 @@ fun intersection (xs, ys) = L.filter (fn x => member x ys) xs
 
 fun foldri f e xs =
     let fun foldri' n [] = e
-	  | foldri' n (z :: zs) = f n (z, foldri' (n+1) zs)
+	  | foldri' n (z :: zs) = f (n, z, foldri' (n+1) zs)
     in foldri' 0 xs
     end
 fun foldli f e xs =
     let fun foldli' n e' [] = e'
-	  | foldli' n e' (z :: zs) = foldli' (n+1) (f n (z, e')) zs
+	  | foldli' n e' (z :: zs) = foldli' (n+1) (f (n, z, e')) zs
     in foldli' 0 e xs
     end
 

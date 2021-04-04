@@ -47,7 +47,9 @@ fun listep rs term =
     in listep' (MS.sort LU.liOrd (T.pos term))
     end
 
-fun isNF rs term = Option.isNone (listep rs term)
+(* Option.isNone が MLton だと使えないようなので *)
+(* fun isNF rs term = Option.isNone (listep rs term) *)
+fun isNF rs term = listep rs term = NONE
 
 fun listepsToNF rs term =
     let val _ = print "    "
