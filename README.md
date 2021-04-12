@@ -77,6 +77,8 @@ $ ./kb <サブコマンド> [オプション ... ]
 
 ### 完備化の実行例
 
+途中で関数記号の重みを求められるので，スペースか改行で区切って入力してください．
+
 ```
 $ ./kb comp -e examples/equations/sample2.eqs
 Given equations:
