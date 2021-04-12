@@ -19,16 +19,16 @@ Knuth-Bendix 完備化をはじめとした，等式論理や一階項書き換�
 
 前節で紹介した等式論理では，等式の左辺から右辺への変形と右辺から左辺への変形の両方が可能なので，コンピュータで扱うのが難しいです．そこで，等式に向きづけして書き換え規則の集合を作ります．これを項書き換え系といいます．
 
-<img src="https://latex.codecogs.com/gif.latex?\mathcal{R}=\{\mathsf{0}&plus;x\to&space;x,(-x)&plus;x\to\mathsf{0},(x&plus;y)&plus;z\to&space;x&plus;(y&plus;z)\}"/>
+<img src="https://latex.codecogs.com/svg.latex?\mathcal{R}=\{\mathsf{0}&plus;x\to&space;x,(-x)&plus;x\to\mathsf{0},(x&plus;y)&plus;z\to&space;x&plus;(y&plus;z)\}"/>
 
 この項書き換え系の等式を導く力は，向きづけしたことで元の等式集合よりも弱くなっています．先に用いるルールを変えることで，二つの異なる計算結果が得られてしまいます．
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{align*}&space;((-x)&plus;x)&plus;z&\to&space;\mathsf{0}&plus;z\to&space;z\\&space;((-x)&plus;x)&plus;z&\to&space;(-x)&plus;(x&plus;z)&space;\end{align*}"\>
+<img src="https://latex.codecogs.com/svg.latex?\begin{align*}&space;((-x)&plus;x)&plus;z&\to&space;\mathsf{0}&plus;z\to&space;z\\&space;((-x)&plus;x)&plus;z&\to&space;(-x)&plus;(x&plus;z)&space;\end{align*}"/>
 
 一方，以下の項書き換え系は向きづけしても等式を導く力が衰えておらず，どのルールを用いても同じ計算結果が得られます．
 また，式変形を続けると必ず停止するため，コンピュータで扱うことが容易です．
 
-<img src="https://latex.codecogs.com/gif.latex?\mathcal{R}=&space;\{\mathsf{0}&plus;y\to&space;y,&space;\mathsf{succ}(x)&plus;y\to\mathsf{succ}(x&plus;y)\}"\>
+<img src="https://latex.codecogs.com/svg.latex?\mathcal{R}=&space;\{\mathsf{0}&plus;y\to&space;y,&space;\mathsf{succ}(x)&plus;y\to\mathsf{succ}(x&plus;y)\}"/>
 
 このような項書き換え系を完備な項書き換え系といいます．Knuth, Bendix は等式集合から同じ力を持つ完備な項書き換え系を計算する手続きを考案しました．この手続きは必ず停止するとは限りませんが，適切な戦略を考えることで効率化や拡張を行う研究が進められています．
 
