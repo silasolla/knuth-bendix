@@ -1,5 +1,6 @@
-(* sources.cm *)
-(* Masaki Haga *)
+(* file: sources.cm *)
+(* description: program sources for SML/NJ *)
+(* author: Masaki Haga *)
 
 Group is
       $/basis.cm
