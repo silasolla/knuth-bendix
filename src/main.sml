@@ -76,7 +76,7 @@ fun info opts =
   in ()
   end
 
-fun help () = print ("USAGE:\n    " ^ name ^ " <SUBCOMMAND> [OPTIONS ... ]\n\nSUBCOMMAND:\n    comp, Applying Knuth-Bendix completion to equations\n    term, Checking if given TRS is terminate by lexicographic path order\n    cpk, Showing critical peaks of TRS\n    info, Showing equations and TRS\n    help, Showing this help message\n\nOPTIONS:\n    -e, Pass to input equations (default: empty set)\n    -r, Pass to input TRS (default: empty set)\n    -o, Pass to output file (default: ./log.txt)\n")
+fun help () = print ("USAGE:\n    " ^ name ^ " <SUBCOMMAND> [OPTIONS ... ]\n\nSUBCOMMAND:\n    comp, Applying Knuth-Bendix completion to given equations and write given TRS to a file\n    sn, Checking if given TRS is terminate by lexicographic path order\n    cpk, Showing critical peaks of given TRS and write them to file\n    info, Showing given equations and TRS and writing them to a file\n    help, Showing this help message\n\nOPTIONS:\n    -e, Pass to input equations (default: empty set)\n    -r, Pass to input TRS (default: empty set)\n    -o, Pass to output file (default: ./log.txt)\n")
 
 fun usage () = print ("USAGE:\n    For basic information, try `" ^ name ^ " help'.\n")
 
