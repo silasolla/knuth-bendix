@@ -131,3 +131,26 @@ $ cat log.txt
      +(0,?x) -> ?x ]
 $
 ```
+
+### 停止性検証の実行例
+
+途中で関数記号の重みを求められるので，スペースか改行で区切って入力してください．
+
+```
+$ ./kb sn -r examples/trs/sample3.trs
+Given TRS:
+   [ *(s(?x),?y) -> +(?y,*(?x,?y)),
+     +(s(?x),?y) -> s(+(?x,?y)),
+     +(0,?y) -> ?y,
+     *(0,?y) -> 0 ]
+
+Function symbols:
+    0 s + *
+
+Please type weights of function symbols (for example: 0 0 0 0):
+0 1 2 3
+
+This is lexicographic path order decreasing TRS.
+Hence this is terminating TRS.
+$
+```
