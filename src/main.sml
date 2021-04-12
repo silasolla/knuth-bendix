@@ -15,10 +15,6 @@ exception Error of string
 val name = CommandLine.name ()
 val args = CommandLine.arguments ()
 
-fun usage () = print ("USAGE:\n    For basic information, try `" ^ name ^ " help'.\n")
-
-fun help () = print ("USAGE:\n    " ^ name ^ " <SUBCOMMAND> [OPTIONS ... ]\n\nSUBCOMMAND:\n    comp, Applying Knuth-Bendix completion to equations\n    term, Checking if given TRS is terminate by lexicographic path order\n    cpk, Showing critical peaks of TRS\n    info, Showing equations and TRS\n\nOPTIONS:\n    -e, Pass to input equations (default: empty set)\n    -r, Pass to input TRS (default: empty set)\n    -o, Pass to output file (default: ./log.txt)\n")
-
 fun readFile pass =
   let val s = TextIO.openIn pass
       val str = TextIO.inputAll s
@@ -66,13 +62,28 @@ fun comp opts =
       val grter = (PO.lpoGt o PO.rdPrec) (foldl (fn (f, acc) => (f, valOf (readInt ())) :: acc) [] fs)
       val result = (print "\n"; Comp.kb grter eqs)
   in case result of
-       SOME trs => writeFile out (Trs.prRules trs)
+       SOME trs => (print ("\nWriting this TRS to `" ^ out ^ "'... ");
+                   writeFile out (Trs.prRules trs); print "Done!\n")
      | NONE => ()
   end
+
+fun info opts =
+  let val (eqs, trs, out) = scanOpts opts
+      val msg = "Given Equations:\n    " ^ Trs.prEqs eqs ^ "\nGiven TRS:\n    " ^ Trs.prRules trs
+      val _ = print msg
+      val _ = (print ("\nWriting this information to `" ^ out ^ "'... ");
+              writeFile out msg; print "Done!\n")
+  in ()
+  end
+
+fun help () = print ("USAGE:\n    " ^ name ^ " <SUBCOMMAND> [OPTIONS ... ]\n\nSUBCOMMAND:\n    comp, Applying Knuth-Bendix completion to equations\n    term, Checking if given TRS is terminate by lexicographic path order\n    cpk, Showing critical peaks of TRS\n    info, Showing equations and TRS\n    help, Showing this help message\n\nOPTIONS:\n    -e, Pass to input equations (default: empty set)\n    -r, Pass to input TRS (default: empty set)\n    -o, Pass to output file (default: ./log.txt)\n")
+
+fun usage () = print ("USAGE:\n    For basic information, try `" ^ name ^ " help'.\n")
 
 fun main _ =
   case args of
     "comp" :: opts => comp opts
+  | "info" :: opts => info opts
   | "help" :: _ => help ()
   | _ => usage ()
 
