@@ -67,6 +67,29 @@ fun comp opts =
      | NONE => ()
   end
 
+fun sn opts =
+  let val (_, trs, out) = scanOpts opts
+      fun funsRules trs =
+        let fun fst (x, _) = x
+            fun snd (_, y) = y
+        in foldl (fn (r,acc) => LU.union ((T.funs (fst r) @ T.funs (snd r)), acc)) [] trs
+        end
+      val fs = funsRules trs
+      fun prFunc fs = foldl (fn (f, acc) => (print (" " ^ f); acc)) () fs
+      val _ = print "Given TRS:\n"
+      val _ = (print o Trs.prRules) trs
+      val _ = print "\nFunction symbols:\n   "
+      val _ = prFunc fs
+      val _ = if fs <> []
+              then (print "\n\nPlease type weights of function symbols (for example:";
+                   L.app (fn _ => print " 0") fs; print "):\n")
+              else ()
+      val isSN = (PO.isLpoDecreasingTrs o PO.rdPrec) (foldl (fn (f, acc) => (f, valOf (readInt ())) :: acc) [] fs) trs
+  in if isSN
+     then print "\nThis is lexicographic path order decreasing TRS.\nHence this is terminating TRS.\n"
+     else print "\nThis is not lexicographic path order decreasing TRS.\n"
+  end
+
 fun info opts =
   let val (eqs, trs, out) = scanOpts opts
       val msg = "Given Equations:\n    " ^ Trs.prEqs eqs ^ "\nGiven TRS:\n    " ^ Trs.prRules trs
@@ -83,6 +106,7 @@ fun usage () = print ("USAGE:\n    For basic information, try `" ^ name ^ " help
 fun main _ =
   case args of
     "comp" :: opts => comp opts
+  | "sn" :: opts => sn opts
   | "info" :: opts => info opts
   | "help" :: _ => help ()
   | _ => usage ()
