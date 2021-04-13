@@ -90,6 +90,27 @@ fun sn opts =
      else print "\nThis is not lexicographic path order decreasing TRS.\n"
   end
 
+fun cpk opts =
+  let val (_, trs, out) = scanOpts opts
+      fun funsRules trs =
+        let fun fst (x, _) = x
+            fun snd (_, y) = y
+        in foldl (fn (r,acc) => LU.union ((T.funs (fst r) @ T.funs (snd r)), acc)) [] trs
+        end
+      val fs = funsRules trs
+      fun prFunc fs = foldl (fn (f, acc) => (print (" " ^ f); acc)) () fs
+      val _ = print "Given TRS:\n"
+      val _ = (print o Trs.prRules) trs
+      val _ = print "\nCritical Peaks:\n"
+      val cpks = Cr.cpk trs
+      fun prCpk (v1,u,v2) = "<" ^ (T.toString v1) ^ " <- " ^ (T.toString u) ^ " -> " ^ (T.toString v2) ^ ">\n"
+      val msg = foldl (fn (c,acc) => acc ^ prCpk c) "" cpks
+      val _ = print msg
+      val _ = (print ("\nWriting this information to `" ^ out ^ "'... ");
+              writeFile out msg; print "Done!\n")
+  in ()
+  end
+
 fun info opts =
   let val (eqs, trs, out) = scanOpts opts
       val msg = "Given Equations:\n    " ^ Trs.prEqs eqs ^ "\nGiven TRS:\n    " ^ Trs.prRules trs
@@ -107,6 +128,7 @@ fun main _ =
   case args of
     "comp" :: opts => comp opts
   | "sn" :: opts => sn opts
+  | "cpk" :: opts => cpk opts
   | "info" :: opts => info opts
   | "help" :: _ => help ()
   | _ => usage ()
