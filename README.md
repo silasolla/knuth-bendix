@@ -75,7 +75,7 @@ $ ./kb <サブコマンド> [オプション ... ]
 角括弧の中に等式および書き換え規則をカンマで区切って書きます．変数は`?`をつけて関数記号と区別します．
 記述例を`examples/equations/`および`examples/trs/`に用意しています．
 
-### 完備化の実行例
+### Knuth-Bendix 完備化の実行例
 
 途中で関数記号の重みを求められるので，スペースか改行で区切って入力してください．
 
@@ -129,7 +129,6 @@ $ cat log.txt
      +(+(?x,?y),?z) -> +(?x,+(?y,?z)),
      +(-(?x),?x) -> 0,
      +(0,?x) -> ?x ]
-$
 ```
 
 ### 停止性検証の実行例
@@ -152,7 +151,6 @@ Please type weights of function symbols (for example: 0 0 0 0):
 
 This is lexicographic path order decreasing TRS.
 Hence this is terminating TRS.
-$
 ```
 
 ### 危険頂計算の実行例
