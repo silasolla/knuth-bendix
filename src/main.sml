@@ -5,15 +5,17 @@
 local
   structure T = Term
   structure L = List
+  structure RW = Rewrite
   structure PO = PathOrder
   structure LU = ListUtil
 in
 
-exception Failure of string
 exception Error of string
 
 val name = CommandLine.name ()
 val args = CommandLine.arguments ()
+
+fun usage () = print ("USAGE:\n    For basic information, try `" ^ name ^ " help'.\n")
 
 fun readFile pass =
   let val s = TextIO.openIn pass
@@ -27,8 +29,9 @@ fun writeFile pass str =
   in (TextIO.output (s, str); TextIO.closeOut s)
   end
 
-fun readInt () =
-  TextIO.scanStream (Int.scan StringCvt.DEC) TextIO.stdIn
+fun readInt () = TextIO.scanStream (Int.scan StringCvt.DEC) TextIO.stdIn
+
+fun readStr () = TextIO.inputLine TextIO.stdIn
 
 (* (pass to eqs file, pass to trs file, pass to output) *)
 fun scanOpts opts =
@@ -38,7 +41,7 @@ fun scanOpts opts =
         | "-e" :: pass :: opts' => scanOpts' opts' ((Trs.rdEqs o readFile) pass, trs, out)
         | "-r" :: pass :: opts' => scanOpts' opts' (eqs, (Trs.rdRules o readFile) pass, out)
         | "-o" :: pass :: opts' => scanOpts' opts' (eqs, trs, pass)
-        | _ => raise Error "Invalid Options"
+        | other :: _ => raise (Error ("Invalid option `" ^ other ^ "'.\n"))
   in scanOpts' opts ([],[],"./log.txt")
   end
 
@@ -111,6 +114,28 @@ fun cpk opts =
   in ()
   end
 
+fun lirw opts =
+  let val (_, trs, out) = scanOpts opts
+      fun funsRules trs =
+        let fun fst (x, _) = x
+            fun snd (_, y) = y
+        in foldl (fn (r,acc) => LU.union ((T.funs (fst r) @ T.funs (snd r)), acc)) [] trs
+        end
+      val fs = funsRules trs
+      fun prFunc fs = foldl (fn (f, acc) => (print (" " ^ f); acc)) () fs
+      val _ = print "Given TRS:\n"
+      val _ = (print o Trs.prRules) trs
+      val _ = print "\nPlease type a first order term:\n"
+      val s = case readStr () of
+                SOME s' => s'
+              | NONE => ""
+      val _ = print "\nLeftmost innermost rewrite steps:\n"
+      val msg = RW.listepsToNF trs (T.fromString s)
+      val _ = (print ("\nWriting this information to `" ^ out ^ "'... ");
+              writeFile out msg; print "Done!\n")
+  in ()
+  end
+
 fun info opts =
   let val (eqs, trs, out) = scanOpts opts
       val msg = "Given Equations:\n    " ^ Trs.prEqs eqs ^ "\nGiven TRS:\n    " ^ Trs.prRules trs
@@ -120,20 +145,22 @@ fun info opts =
   in ()
   end
 
-fun help () = print ("USAGE:\n    " ^ name ^ " <SUBCOMMAND> [OPTIONS ... ]\n\nSUBCOMMAND:\n    comp, Applying Knuth-Bendix completion to given equations and write given TRS to a file\n    sn, Checking if given TRS is terminate by lexicographic path order\n    cpk, Showing critical peaks of given TRS and write them to file\n    info, Showing given equations and TRS and writing them to a file\n    help, Showing this help message\n\nOPTIONS:\n    -e, Pass to input equations (default: empty set)\n    -r, Pass to input TRS (default: empty set)\n    -o, Pass to output file (default: ./log.txt)\n")
-
-fun usage () = print ("USAGE:\n    For basic information, try `" ^ name ^ " help'.\n")
+fun help () = print ("USAGE:\n    " ^ name ^ " <SUBCOMMAND> [OPTIONS ... ]\n\nSUBCOMMAND:\n    comp, Apply Knuth-Bendix completion to given equations and write given TRS to a file\n    sn, Check if given TRS is terminate by lexicographic path order\n    cpk, Show critical peaks of given TRS and write them to file\n    lirw, Show leftmost innermost rewrite steps to normal form by given TRS and write them to a file\n    info, Show given equations and TRS and write them to a file\n    help, Show this help message\n\nOPTIONS:\n    -e, Pass to input equations (default: empty set)\n    -r, Pass to input TRS (default: empty set)\n    -o, Pass to output file (default: ./log.txt)\n")
 
 fun main _ =
   case args of
     "comp" :: opts => comp opts
   | "sn" :: opts => sn opts
   | "cpk" :: opts => cpk opts
+  | "lirw" :: opts => lirw opts
   | "info" :: opts => info opts
   | "help" :: _ => help ()
-  | _ => usage ()
+  | other :: _ => raise (Error ("Invalid subcommand `" ^ other ^ "'.\n"))
+  | [] => raise (Error "No subcommand given.\n")
 
 val _ = main ()
+  handle Error str => (print (name ^ ": Error: " ^ str ^ "\n"); usage ())
+
 val _ = OS.Process.exit (OS.Process.success)
 
 end

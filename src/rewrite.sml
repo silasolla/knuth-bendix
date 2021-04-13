@@ -8,7 +8,8 @@ sig
     val step: Trs.trs -> Term.term -> Term.position -> Term.term option
     val listep: Trs.trs -> Term.term -> Term.term option
     val isNF: Trs.trs -> Term.term -> bool
-    val listepsToNF: Trs.trs -> Term.term -> unit
+    (* val listepsToNF: Trs.trs -> Term.term -> unit *)
+    val listepsToNF: Trs.trs -> Term.term -> string
     val linf: Trs.trs -> Term.term -> Term.term
     val isJoinable: Trs.trs -> Term.term * Term.term -> bool
 end
@@ -51,6 +52,7 @@ fun listep rs term =
 (* fun isNF rs term = Option.isNone (listep rs term) *)
 fun isNF rs term = listep rs term = NONE
 
+(*
 fun listepsToNF rs term =
     let val _ = print "    "
 	fun listepsToNF' term' =
@@ -58,6 +60,17 @@ fun listepsToNF rs term =
 		SOME t => (print (T.toString term' ^ "\n->R "); listepsToNF' t)
 	      | NONE => print (T.toString term' ^ "\n")
     in listepsToNF' term
+    end
+*)
+
+fun listepsToNF rs term =
+    let fun listepsToNF' term' acc =
+            case listep rs term' of
+                SOME t => listepsToNF' t (acc ^ T.toString term' ^ "\n->R ")
+              | NONE => acc ^ T.toString term' ^ "\n"
+        val msg = listepsToNF' term "    "
+        val _ = print msg
+    in msg
     end
 
 fun linf rs term = case listep rs term of
