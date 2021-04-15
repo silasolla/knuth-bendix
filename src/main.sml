@@ -138,7 +138,7 @@ fun lirw opts =
 
 fun info opts =
   let val (eqs, trs, out) = scanOpts opts
-      val msg = "Given Equations:\n    " ^ Trs.prEqs eqs ^ "\nGiven TRS:\n    " ^ Trs.prRules trs
+      val msg = "Given Equations:\n" ^ Trs.prEqs eqs ^ "\nGiven TRS:\n" ^ Trs.prRules trs
       val _ = print msg
       val _ = (print ("\nWriting this information to `" ^ out ^ "'... ");
               writeFile out msg; print "Done!\n")
