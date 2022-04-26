@@ -27,5 +27,3 @@ Group is
 
       ./src/formula.sml
       ./src/yices2.sml
-
-      ./src/many_sorted.sml

@@ -7,30 +7,52 @@ Knuth-Bendix 完備化をはじめとした，等式論理や一階項書き換�
 ### 等式論理について
 
 与えられた等式集合のもとで，どのような等式を導くことができるかを考える論理を等式論理と言います．
-例えば，以下のような等式の集合を考えます．
+例えば，以下のような等式の集合 E を考えます．
 
-<img src="https://latex.codecogs.com/svg.latex?E&space;=&space;\{\mathsf{0}&space;&plus;&space;x&space;=&space;x,(-x)&plus;x=\mathsf{0},&space;(x&plus;y)&plus;z=x&plus;(y&plus;z)\}"/>
+```
+E = {  0 + x       = x,           ...(1)
+       (-x) + x    = 0,           ...(2)
+       (x + y) + z = x + (y + z)  ...(3)  }
+```
 
-この集合に含まれる等式を用いることで，以下のように別の等式を導くことができます．
+この E に含まれる等式を用いることで，以下のように別の等式を導くことができます．
 
-<img src="https://latex.codecogs.com/svg.latex?\begin{align*}&space;x&plus;(-x)&=\mathsf{0}&plus;(x&plus;(-x))\\&space;&=((-(-x))&plus;(-x))&plus;(x&plus;(-x))\\&space;&=(-(-x))&plus;((-x)&plus;(x&plus;(-x)))\\&space;&=(-(-x))&plus;(((-x)&plus;x)&plus;(-x))\\&space;&=(-(-x))&plus;(\mathsf{0}&plus;(-x))\\&space;&=(-(-x))&plus;(-x)\\&space;&=\mathsf{0}&space;\end{align*}"/>
+```
+x + (-x) = 0 + (x + (-x))                 ...(1)
+         = ((-(-x)) + (-x)) + (x + (-x))  ...(2)
+         = (-(-x)) + ((-x) + (x + (-x)))  ...(3)
+         = (-(-x)) + (((-x) + x) + (-x))  ...(3)
+         = (-(-x)) + (0 + (-x))           ...(2)
+         = (-(-x)) + (-x)                 ...(1)
+         = 0                              ...(2)
+```
 
 ### 項書き換え系と Knuth-Bendix 完備化について
 
 前節で紹介した等式論理では，等式の左辺から右辺への変形と右辺から左辺への変形の両方が可能なので，コンピュータで扱うのが難しいです．そこで，等式に向きづけして書き換え規則の集合を作ります．これを項書き換え系といいます．
 
-<img src="https://latex.codecogs.com/svg.latex?\mathcal{R}=\{\mathsf{0}&plus;x\to&space;x,(-x)&plus;x\to\mathsf{0},(x&plus;y)&plus;z\to&space;x&plus;(y&plus;z)\}"/>
+```
+R = {  0 + x       -> x,           ...(1)
+       (-x) + x    -> 0,           ...(2)
+       (x + y) + z -> x + (y + z)  ...(3)  }
+```
 
 この項書き換え系の等式を導く力は，向きづけしたことで元の等式集合よりも弱くなっています．先に用いるルールを変えることで，二つの異なる計算結果が得られてしまいます．
 
-<img src="https://latex.codecogs.com/svg.latex?\begin{align*}&space;((-x)&plus;x)&plus;z&\to&space;\mathsf{0}&plus;z\to&space;z\\&space;((-x)&plus;x)&plus;z&\to&space;(-x)&plus;(x&plus;z)&space;\end{align*}"/>
+```
+((-x) + x) + z -> 0 + z -> z      ...(2),(1)
+((-x) + x) + z -> (-x) + (x + z)  ...(3)
+```
 
-一方，以下の項書き換え系は向きづけしても等式を導く力が衰えておらず，どのルールを用いても同じ計算結果が得られます．
+一方，以下の項書き換え系 (自然数の上の加法を定義しています) は向きづけしても等式を導く力が衰えておらず，どのルールを用いても同じ計算結果が得られます．
 また，式変形を続けると必ず停止するため，コンピュータで扱うことが容易です．
 
-<img src="https://latex.codecogs.com/svg.latex?\mathcal{R}=&space;\{\mathsf{0}&plus;y\to&space;y,&space;\mathsf{succ}(x)&plus;y\to\mathsf{succ}(x&plus;y)\}"/>
+```
+R = {  0 + y        -> y,                   
+       succ (x) + y -> succ (x + y)  }
+```
 
-このような項書き換え系を完備な項書き換え系といいます．Knuth, Bendix は等式集合から同じ力を持つ完備な項書き換え系を計算する手続きを考案しました．この手続きは必ず停止するとは限りませんが，適切な戦略を考えることで効率化や拡張を行う研究が進められています．
+このような項書き換え系を完備な項書き換え系とよびます．Knuth, Bendix は等式集合から同じ力を持つ完備な項書き換え系を計算する手続きを考案しました．この手続きは必ず停止するとは限りませんが，適切な戦略を考えることで効率化や拡張を行う研究が進められています．
 
 このツールは等式集合に対して上記の完備化手続きをはじめとした，さまざまな機能を提供しています．
 
